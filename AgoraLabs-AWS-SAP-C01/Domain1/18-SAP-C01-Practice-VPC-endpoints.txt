@@ -30,5 +30,3 @@ Connect to the public instance via ssh
 Connect to the private instance via ssh
 
 aws s3 ls
-
-
