@@ -1,0 +1,103 @@
+######################################
+#Step 0 : VPC Subnet and EC2 creation#
+######################################
+
+#create AccountA VPC
+aws ec2 create-vpc --cidr-block 10.2.0.0/16
+
+#create AccountA subnet
+aws ec2 create-subnet --vpc-id vpc-0d6acdcb26b533229 --cidr-block 10.2.1.0/24
+
+#create a Security group
+aws ec2 create-security-group --group-name SecurityGroupVPCA --description "Security group VPC A" --vpc-id vpc-0d6acdcb26b533229
+
+#create EC2 instance in the subnet
+aws ec2 run-instances --image-id ami-0b1e2eeb33ce3d66f --count 1 --instance-type t2.micro --key-name accountadmina --security-group-ids sg-078afbd1308ac8bce --subnet-id subnet-0301a18f8455b85b0
+
+##################################################
+#Step 1 : Certificates Creation And Import in ACM#
+##################################################
+
+#Clone Easy RSA Git Repo
+git clone https://github.com/OpenVPN/easy-rsa.git 
+
+cd easy-rsa/easyrsa3
+
+#Initialize Public Key Infrastructure (PKI)
+./easyrsa init-pki
+
+#Build Certificate Authority
+./easyrsa build-ca nopass
+
+#Build Server Certificate
+./easyrsa build-server-full agoralabs.site nopass
+
+#Build Client Certificate
+./easyrsa build-client-full joseph.agoralabs.site nopass
+
+#Copy required certificates in to a single folder (optional) and upload to AWS Certificate Manager (ACM)
+mkdir acm
+cp pki/ca.crt acm
+cp pki/issued/agoralabs.site.crt acm
+cp pki/issued/joseph.agoralabs.site.crt acm
+cp pki/private/agoralabs.site.key acm
+cp pki/private/joseph.agoralabs.site.key acm
+cd acm
+
+aws acm import-certificate --certificate fileb://agoralabs.site.crt --private-key fileb://agoralabs.site.key --certificate-chain fileb://ca.crt --region us-west-2
+
+aws acm import-certificate --certificate fileb://joseph.agoralabs.site.crt --private-key fileb://joseph.agoralabs.site.key --certificate-chain fileb://ca.crt --region us-west-2
+
+
+####################################################
+#Step 2 : Create Client VPN Endpoint in Web Console#
+####################################################
+
+CIDR 20.0.0.0/16 
+#any user will get an IP from this range when connecting to the VPN
+
+#create a new log group in CloudWatch Web Console
+
+###################################################
+#Step 3 : Enable VPN Connectivity for all clients #
+###################################################
+
+#Associate Client VPN with your private Subnet
+#It takes more than 20 minutes
+
+##################################
+#Step 4 : Configure Authorization#
+##################################
+
+#Allow Inbound trafic on the security group
+
+#Add Authorization rules to grant clients access to the networks. 
+
+##############################################################
+#Step 5 : Download the Client VPN endpoint configuration file#
+##############################################################
+
+#update config.ovpn file with the following information
+cert /Users/dream/easy-rsa/easyrsa3/acm/joseph.agoralabs.site.crt
+key /Users/dream/easy-rsa/easyrsa3/acm/joseph.agoralabs.site.key
+
+#########################################################################
+#Step 6 : Download the Client VPN and Connect to the Client VPN endpoint#
+#########################################################################
+
+#Download here https://aws.amazon.com/fr/vpn/client-vpn-download/
+#Add connection profile by selecting the endpoint configuration file
+#Click connect
+#Connect to the EC2 instance from your local machine
+
+
+
+
+
+######################################
+#########     Ressources   ###########
+######################################
+
+https://prasaddomala.com/2020/04/02/aws-client-vpn-setup-private-access-across-aws-accounts-and-vpcs/
+https://docs.aws.amazon.com/fr_fr/vpn/latest/clientvpn-admin/cvpn-getting-started.html
+
