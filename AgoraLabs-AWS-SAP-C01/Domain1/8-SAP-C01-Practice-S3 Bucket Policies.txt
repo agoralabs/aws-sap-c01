@@ -1,0 +1,48 @@
+#############################
+######    Allow Policy  #####
+#############################
+{
+  "Version": "2012-10-17",
+  "Id": "S3PolicyId1",
+
+  "Statement": [
+
+    {
+      "Sid": "IPAllow",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::examplebucket/*",
+      "Condition": {
+         "IpAddress": {"aws:SourceIp": "54.240.143.0/24"}
+
+      }
+    }
+  ]
+}
+
+#############################
+######    Deny Policy  ######
+#############################
+
+,
+        {
+            "Sid": "Deny permission",
+            "Effect": "Deny",
+            "Principal": {
+                "AWS": "arn:aws:iam::ACCOUNTID_B:root"
+            },
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::host1-account-a-bucket"
+        }
+
+#############################
+######    CLI COMMANDS  #####
+#############################
+
+aws s3 ls s3://host1-account-a-bucket --profile AccountBadmin
+aws s3api get-bucket-location --bucket host1-account-a-bucket --profile AccountBadmin
+
+aws s3 ls s3://host1-account-a-bucket --profile Dave
+aws s3api get-bucket-location --bucket host1-account-a-bucket --profile Dave
+

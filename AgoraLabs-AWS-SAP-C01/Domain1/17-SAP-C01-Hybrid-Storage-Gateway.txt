@@ -1,0 +1,55 @@
+#################################
+#Step 1 : Creates a File Gateway#
+#################################
+
+#Choose Amazon EC2
+
+#Choose t2.large
+
+#Add new EBS Volume of 10go - The appliance needs sufficient memory to permform well
+
+#Configure a Security Group allowing all traffic
+
+#Connect to the Gateway -> Copy public IP Address : 54.214.117.223
+
+###################################
+#Step 2 : Creates a NFS File Share#
+###################################
+
+#Choose S3 bucket : host1-bucket-dev
+
+#Copy the mount command on Mac OS
+
+##############################################
+#Step 3 : Mount an NFS File Share on-premises#
+##############################################
+
+On premises create a folder - go to the folder - run the mount command
+
+mkdir /tmp/filegateway
+
+cd /tmp/filegateway
+
+mount_nfs -o vers=3,nolock,hard -v 18.237.120.76:/host1-bucket-dev filegateway
+
+ls -l
+
+################################
+#Step 4 : Test the File Gateway#
+################################
+
+ls -l
+
+touch localfile.txt
+
+echo "toto" > localfile.txt
+
+
+###############################
+#Step 5 : Remove the NFS mount#
+###############################
+
+umount -f /tmp/filegateway/
+
+
+
