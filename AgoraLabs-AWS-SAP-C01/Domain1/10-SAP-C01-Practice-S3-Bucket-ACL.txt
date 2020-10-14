@@ -1,0 +1,20 @@
+#############################
+######    CLI COMMANDS  #####
+#############################
+
+aws s3 rm s3://host1-account-a-bucket/custom.txt --profile AccountAadmin
+
+aws s3 rm s3://host1-account-a-bucket/canned.txt --profile AccountAadmin
+
+#custom ACL
+aws s3 cp custom.txt s3://host1-account-a-bucket/ --grants read=emailaddress=secobo@yahoo.com --profile AccountAadmin
+
+#canned ACL
+aws s3 cp canned.txt s3://host1-account-a-bucket/ --acl bucket-owner-read --profile AccountBadmin
+
+#verify ACL1
+aws s3api get-object-acl --bucket host1-account-a-bucket --key canned.txt --profile AccountAadmin
+
+#verify ACL2
+aws s3api get-object-acl --bucket host1-account-a-bucket --key custom.txt --profile AccountBadmin
+
