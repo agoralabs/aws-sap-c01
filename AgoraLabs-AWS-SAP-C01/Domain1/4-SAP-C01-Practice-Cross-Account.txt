@@ -1,0 +1,11 @@
+##################
+#### AssumeRole ##
+##################
+{
+	"Version": "2012-10-17",
+	"Statement": {
+		"Effect": "Allow",
+		"Action": "sts:AssumeRole",
+		"Resource": "ARN_OF_CROSS_ACCOUNT_ROLE"
+	}
+}
