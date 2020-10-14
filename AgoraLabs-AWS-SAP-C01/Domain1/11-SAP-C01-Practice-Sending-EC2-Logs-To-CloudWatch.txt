@@ -1,0 +1,50 @@
+#EC2 Linux Instance
+Use Amazon Linux 2
+
+#EC2 instance install Apache
+sudo yum -y install httpd
+sudo service httpd start  
+
+#EC2 instance instance CloudWatch Log Agent
+sudo yum update -y
+sudo yum install -y awslogs
+sudo systemctl start awslogsd
+
+#EC2 service role, add inline policy
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams"
+    ],
+      "Resource": [
+        "*"
+    ]
+  }
+ ]
+}
+
+#se connecter à la console CloudWatch
+https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2
+
+#se connecter à l'instance EC2
+ssh -i "accountadmina.pem" ec2-user@ec2-54-189-98-229.us-west-2.compute.amazonaws.com
+
+#montrer que l'agent tourne
+sudo systemctl status awslogsd
+
+#Voir le fichier de configuration
+cat /etc/awslogs/awslogs.conf
+cat /etc/awslogs/awscli.conf
+
+
+
+
+
+
