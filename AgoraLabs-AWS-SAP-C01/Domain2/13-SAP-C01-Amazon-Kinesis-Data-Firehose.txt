@@ -1,0 +1,9 @@
+# Firehose List delivery streams
+aws firehose list-delivery-streams
+
+#Put-Record in Kinesis firehose
+
+aws firehose put-record --delivery-stream-name KDFDemo --record '{"Data":"Data KDF 1"}' --cli-binary-format raw-in-base64-out
+
+aws firehose put-record --delivery-stream-name KDFDemo --record '{"Data":"Data KDF 2"}' --cli-binary-format raw-in-base64-out
+

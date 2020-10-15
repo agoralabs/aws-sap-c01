@@ -1,0 +1,57 @@
+############################################
+#Step 1 : Launch Amazon Linux EC2 instance #
+############################################
+
+AMI : ami-0873b46c45c11058d
+VPC : vpc-06f6657e
+AZ : us-west-2c
+Subnet : subnet-7c887721
+
+##################################
+#Step 2 : Create a Redis Cluster #
+##################################
+
+VPC : vpc-06f6657e
+AZ : us-west-2c
+Subnet : subnet-7c887721
+
+Node type: cache.t2.micro
+Multi-AZ: Disabled
+Backup Retention Period: Disabled
+Number of Nodes: 1 node
+
+##################################################################
+#Step 3 : Connect to a Redis Cluster or Replication Group (Linux)#
+##################################################################
+
+#Download and install the GNU Compiler Collection (gcc).
+
+sudo yum install gcc
+
+#Download and compile the redis-cli utility.
+
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+
+#Connect to the REDIS cluster
+
+src/redis-cli -c -h my-redis-cluster.qn6lbe.0001.usw2.cache.amazonaws.com -p 6379
+
+#Run Redis commands
+
+set a "hello"          // Set key "a" with a string value and no expiration
+OK
+get a                  // Get value for key "a"
+"hello"
+get b                  // Get value for key "b" results in miss
+(nil)				
+set b "Good-bye" EX 5  // Set key "b" with a string value and a 5 second expiration
+"Good-bye"
+get b                  // Get value for key "b"
+"Good-bye"
+                       // wait >= 5 seconds
+get b
+(nil)                  // key has expired, nothing returned
+quit                   // Exit from redis-cli

@@ -1,0 +1,10 @@
+Hello from Amazon SNS!
+
+
+Hi everyone,
+
+Publishing a message to an Amazon SNS topic.
+
+Regards.
+
+Joseph.

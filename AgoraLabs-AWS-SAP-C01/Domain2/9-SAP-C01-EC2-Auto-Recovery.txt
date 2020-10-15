@@ -1,0 +1,5 @@
+#Force ALARM state on alarm
+
+aws cloudwatch set-alarm-state --alarm-name "NAME_OF_THE_ALARM" --state-value ALARM --state-reason "Test EC2 Auto Recovery action" --region us-west-2
+
+

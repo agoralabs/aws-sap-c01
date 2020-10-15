@@ -1,0 +1,19 @@
+#########################################
+#Step 1 : Create a Launch Configuration #
+#########################################
+
+AMI : ami-0873b46c45c11058d
+
+VPC : vpc-06f6657e 
+
+########################################
+#Step 2 : Create an Auto Scaling group #
+########################################
+
+AZ : us-west-2c
+Subnet : subnet-7c887721
+
+/dev/null produces no output.
+/dev/zero produces a continuous stream of NULL (zero value) bytes.
+
+dd if=/dev/zero of=/dev/null

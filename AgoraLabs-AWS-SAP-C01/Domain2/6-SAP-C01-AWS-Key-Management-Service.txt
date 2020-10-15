@@ -1,0 +1,20 @@
+#Show Default key used by Parameter Store
+aws kms describe-key --key-id alias/aws/ssm
+
+#Show Customer created key
+aws kms describe-key --key-id f8aba486-0898-4b30-a779-6e272fad4c1b
+
+
+aws ssm put-parameter --name param1 --value "secret" --type SecureString --key-id f55c5bd7-fc04-484c-be10-ba6da135b196
+
+
+
+
+aws ssm get-parameter --name param1
+
+aws ssm get-parameter --name param1 --with-decryption
+
+aws kms schedule-key-deletion --key-id f8aba486-0898-4b30-a779-6e272fad4c1b --pending-window-in-days 7
+
+aws kms schedule-key-deletion --key-id f55c5bd7-fc04-484c-be10-ba6da135b196 --pending-window-in-days 7
+

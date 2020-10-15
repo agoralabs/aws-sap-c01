@@ -1,0 +1,12 @@
+# Kinesis List streams
+aws kinesis list-streams
+
+#Put-Record in Kinesis
+aws kinesis put-record --stream-name KDSDemo --partition-key 1 --data "Data for KDS Demo data 1" --cli-binary-format raw-in-base64-out
+aws kinesis put-record --stream-name KDSDemo --partition-key 1 --data "Data for KDS Demo data 2" --cli-binary-format raw-in-base64-out
+
+#Getting the shard iterator
+aws kinesis get-shard-iterator --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON --stream-name KDSDemo
+
+#Fetch Records with shard iterator
+aws kinesis get-records --shard-iterator 
