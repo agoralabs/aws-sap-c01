@@ -1,0 +1,52 @@
+#Step 1: Install wget
+
+cd /home/ec2-user
+
+sudo yum install wget
+
+#Step 2: Use wget to download the MySQL Yum repository.
+
+wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+
+#Step 3: Now, install the mysql locally
+
+sudo yum localinstall mysql80-community-release-el7-3.noarch.rpm
+
+#Step 4: Install MySQL community server
+
+sudo yum install mysql-community-server
+
+#Step 5: Confirm your MySQL service status
+
+sudo service mysqld status
+
+#find temporary root password
+
+sudo grep 'temporary password' /var/log/mysqld.log
+
+#Connect to mysql
+mysql -u root 
+
+#ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$Stephane123';
+
+#Git installation
+
+sudo yum install git
+
+#Download employee.sql
+
+git clone https://github.com/datacharmer/test_db.git
+
+cd test_db
+
+set storage_engine = InnoDB;
+
+mysql -t < employees.sql -u root -p
+
+#Error
+CREATE USER 'root'@'%' IDENTIFIED BY '$Stephane123';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+
+
