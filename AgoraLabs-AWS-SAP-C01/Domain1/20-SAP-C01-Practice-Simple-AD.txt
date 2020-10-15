@@ -1,0 +1,86 @@
+#########################################
+#Step 1 : Create and Configure Your VPC #
+#########################################
+
+https://console.aws.amazon.com/vpc/
+
+#VPC creation using VPC Dashboard
+IP CIDR block : 10.0.0.0/16
+VPC name : ADS VPC
+Public subnet : 10.0.0.0/24
+Subnet name : ADS Subnet 1
+
+#Second Subnet creation
+Name tag : ADS Subnet 2
+CIDR Block : 10.0.1.0/24
+
+##################################################
+#Step 2 : Create and Configure Your EC2 instance #
+##################################################
+
+https://console.aws.amazon.com/ec2/
+#EC2 instance creation
+Launch and Amazon Linux instance in the same VPC and the public subnet of the VPC
+Select Assign public IP address
+
+
+################################
+#Step 3 : Create Your Simple AD#
+################################
+
+https://console.aws.amazon.com/directoryservicev2/
+#choose Directories and then choose Set up directory
+
+Directory size : Small
+Directory DNS name : corp.agoralabs.site
+Default administrative User Info : Administrator
+Administrator password : SimpleAD123
+VPC : created earlier
+Subnets : created earlier
+
+#Simple AD creation takes about 10 minutes
+
+##################################################
+#Step 4 : Join an EC2 Instance to Your Simple AD #
+##################################################
+
+#Connect to the instance using any SSH client
+ssh ...
+
+#make sure the instance is up to date
+sudo yum -y update
+
+#install required packages
+sudo yum -y install sssd realmd krb5-workstation samba-common-tools
+
+#setup DNS servers - add the two DNS address on Directory details in web console
+nano /etc/resolv.conf
+nameserver //DNS address 1 of Directory details in web console
+nameserver //DNS address 2 of Directory details in web console
+
+#join the domain
+sudo realm join -U Administrator@corp.agoralabs.site corp.agoralabs.site --verbose
+
+#Set the SSH service to allow password authentication
+sudo nano /etc/ssh/sshd_config
+PasswordAuthentication yes
+
+#Restart the SSH service
+sudo systemctl restart sshd.service
+
+#Add the following to the bottom of the sudoers file and save it
+sudo nano /etc/sudoers
+
+## Add the "AWS Delegated Administrators" group from the corp.agoralabs.site domain.
+%AWS\ Delegated\ Administrators@corp.agoralabs.site ALL=(ALL:ALL) ALL                        
+                    
+#restart the sssd service
+sudo systemctl restart sssd.service
+
+#Disconnect and Reconnect using AD credentials
+ssh -l Administrator@corp.agoralabs.site 52.88.128.228
+
+
+
+
+
