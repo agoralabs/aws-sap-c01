@@ -1,0 +1,16 @@
+#Create policy - Choose full access for EC2 & S3
+
+AmazonS3FullAccess
+AmazonEC2FullAccess
+
+
+
+
+#Add condition to restrict actions on us-west-2 only
+
+
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": "us-west-2"
+                }
+            }
