@@ -1,0 +1,15 @@
+#Deny access to a specific bucket
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Deny",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": "arn:aws:s3:::host1-bucket-prod"
+        }
+    ]
+}
