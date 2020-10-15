@@ -1,0 +1,16 @@
+#Technical tags
+Name : VM001, VM002, VM003
+Environment : Development, Test, Staging, Production
+
+
+#Business tags
+Team : Developers, Busines analysts, Business
+Project : AWS Migration, DSP2 Compliance
+Owner : DIRCOM, DOF, DOP
+Business Unit/Cost Center : Legal department, Accounting department, Research and Development, Advertising, Marketing, and Customer Service
+
+#Security tags
+Confidentiality : Restricted, Internal use, Public
+Compliance : ISO 9000, PCI DSS, FIPS, HIPAA, ASIP HDS
+
+
